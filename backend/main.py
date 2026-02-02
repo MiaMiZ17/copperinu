@@ -6,6 +6,7 @@ from solana.rpc.api import Client
 from solders.pubkey import Pubkey as PublicKey
 from spl.token.instructions import get_associated_token_address
 from cachetools import cached, TTLCache
+import traceback # Added for detailed error logging
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -48,28 +49,45 @@ def get_tokenomics_data():
     total_supply = 0
     try:
         print("[LOG] Fetching total supply...")
-        supply_response = client.get_token_supply(PublicKey(COPPERINU_MINT_ADDRESS))
-        total_supply = supply_response.value.ui_amount or 0
-        print(f"[SUCCESS] Total Supply: {total_supply}")
+        mint_public_key = PublicKey.from_string(COPPERINU_MINT_ADDRESS)
+        supply_response = client.get_token_supply(mint_public_key)
+        
+        if supply_response.value is None:
+            print(f"[ERROR] Total supply response value is None for mint: {COPPERINU_MINT_ADDRESS}")
+            total_supply = 0
+        elif supply_response.value.ui_amount is None:
+            print(f"[ERROR] Total supply ui_amount is None for mint: {COPPERINU_MINT_ADDRESS}")
+            total_supply = 0
+        else:
+            total_supply = supply_response.value.ui_amount
+            print(f"[SUCCESS] Total Supply: {total_supply}")
     except Exception as e:
-        print(f"[ERROR] Getting total supply: {e}")
+        print(f"[ERROR] Getting total supply: {e}\n{traceback.format_exc()}")
         total_supply = 0
 
     # --- 2. Get Burn Wallet Balance ---
     burned_amount = 0
     try:
         print("[LOG] Fetching burn wallet balance...")
-        mint_key = PublicKey(COPPERINU_MINT_ADDRESS)
-        burn_wallet_key = PublicKey(BURN_WALLET_ADDRESS)
+        mint_key = PublicKey.from_string(COPPERINU_MINT_ADDRESS)
+        burn_wallet_key = PublicKey.from_string(BURN_WALLET_ADDRESS)
         
         ata_address = get_associated_token_address(burn_wallet_key, mint_key)
         print(f"[LOG] Calculated ATA for burn wallet: {ata_address}")
 
         balance_response = client.get_token_account_balance(ata_address)
-        burned_amount = balance_response.value.ui_amount or 0
-        print(f"[SUCCESS] Burned Amount: {burned_amount}")
+        
+        if balance_response.value is None:
+            print(f"[INFO] Burn wallet balance response value is None for ATA: {ata_address} (Normal if ATA does not exist or has no balance yet).")
+            burned_amount = 0
+        elif balance_response.value.ui_amount is None:
+            print(f"[INFO] Burn wallet ui_amount is None for ATA: {ata_address} (Normal if ATA has no balance yet).")
+            burned_amount = 0
+        else:
+            burned_amount = balance_response.value.ui_amount
+            print(f"[SUCCESS] Burned Amount: {burned_amount}")
     except Exception as e:
-        print(f"[INFO] Could not get burn wallet balance (this is normal if ATA does not exist): {e}")
+        print(f"[INFO] Could not get burn wallet balance for ATA: {ata_address} - {e}\n{traceback.format_exc()} (Normal if ATA does not exist).")
         burned_amount = 0
 
     # --- 3. Calculate Circulating Supply ---
@@ -89,7 +107,7 @@ def get_tokenomics_data():
             price = data.get(COINGECKO_TOKEN_ID, {}).get('usd', 0)
             print(f"[SUCCESS] Price: {price}")
         except requests.exceptions.RequestException as e:
-            print(f"[ERROR] Getting price from CoinGecko: {e}")
+            print(f"[ERROR] Getting price from CoinGecko: {e}\n{traceback.format_exc()}")
             price = 0
     else:
         print("[WARN] COINGECKO_API_KEY not found in .env file.")
@@ -102,14 +120,20 @@ def get_tokenomics_data():
     top_holders = []
     try:
         print("[LOG] Fetching top holders...")
-        largest_accounts_response = client.get_token_largest_accounts(PublicKey(COPPERINU_MINT_ADDRESS))
-        top_holders = [
-            {"address": str(acc.address), "amount": acc.ui_amount_string}
-            for acc in largest_accounts_response.value[:5]
-        ]
-        print(f"[SUCCESS] Fetched {len(top_holders)} Top Holders.")
+        mint_public_key_for_holders = PublicKey.from_string(COPPERINU_MINT_ADDRESS)
+        largest_accounts_response = client.get_token_largest_accounts(mint_public_key_for_holders)
+        
+        if largest_accounts_response.value is None or not largest_accounts_response.value:
+            print(f"[ERROR] Top holders response value is None or empty for mint: {COPPERINU_MINT_ADDRESS}")
+            top_holders = []
+        else:
+            top_holders = [
+                {"address": str(acc.address), "amount": acc.ui_amount_string}
+                for acc in largest_accounts_response.value[:5]
+            ]
+            print(f"[SUCCESS] Fetched {len(top_holders)} Top Holders.")
     except Exception as e:
-        print(f"[ERROR] Getting top holders: {e}")
+        print(f"[ERROR] Getting top holders: {e}\n{traceback.format_exc()}")
         top_holders = []
 
     print("--- [END] Finished fetching tokenomics data ---")
