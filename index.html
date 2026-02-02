@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark" style="scroll-behavior: smooth;">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -27,13 +27,25 @@
       }
     }
   </script>
-  <!-- Jupiter Terminal script (official from docs) -->
-  <script src="https://terminal.jup.ag/main-v4.js" defer></script>
+  <!-- Jupiter Plugin Script -->
+  <script src="https://plugin.jup.ag/plugin-v1.js" data-preload defer></script>
+
   <style>
     body { background: #0f0f0f; color: #e5e5e5; }
     .patina-bg { background: linear-gradient(to bottom, #1A1A1A, #2a1e18); }
     .copper-glow { box-shadow: 0 0 25px rgba(184,115,51,0.4); }
     .coin-glow { filter: drop-shadow(0 0 20px rgba(184,115,51,0.6)); }
+
+    /* Custom animation for the burn bar */
+    @keyframes burn-progress {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+    .burning-bar-progress {
+      background: linear-gradient(90deg, #ff4500, #ff8c00, #ffd700, #ff8c00, #ff4500);
+      background-size: 200% 100%;
+      animation: burn-progress 2s linear infinite;
+    }
   </style>
 </head>
 <body class="min-h-screen font-sans antialiased">
@@ -51,30 +63,30 @@
   </div>
 
   <!-- Hero Section -->
-  <header class="relative patina-bg h-screen flex flex-col items-center justify-center overflow-hidden text-center px-6">
+  <header class="relative patina-bg h-screen flex flex-col items-center justify-center overflow-hidden text-center px-4 md:px-6">
     <img 
       src="logo.jpg" 
       alt="Copper Inu Bullion Coin" 
       class="w-48 h-48 md:w-64 md:h-64 object-contain coin-glow mb-8"
     />
     <div class="relative z-20">
-      <h1 class="text-7xl md:text-9xl font-serif text-copper tracking-wide drop-shadow-2xl">
+      <h1 class="text-6xl md:text-9xl font-serif text-copper tracking-wide drop-shadow-2xl">
         COPPERINU
       </h1>
-      <h2 class="text-3xl md:text-5xl font-serif text-bronze mt-4 mb-8">
+      <h2 class="text-2xl md:text-5xl font-serif text-bronze mt-4 mb-8">
         – The Inu Standard –
       </h2>
-      <p class="text-xl md:text-3xl text-gray-300 max-w-4xl mx-auto">
+      <p class="text-lg md:text-3xl text-gray-300 max-w-4xl mx-auto">
         Commodities Reimagined On-Chain | Deflationary Burns & Perpetual Memetic Dominance
       </p>
       <div class="mt-12 flex flex-col md:flex-row items-center justify-center gap-6">
-        <div class="bg-gray-900 border border-copper-dark rounded-lg px-6 py-4 text-lg font-mono">
+        <div class="bg-gray-900 border border-copper-dark rounded-lg px-4 py-3 md:px-6 md:py-4 text-base md:text-lg font-mono">
           61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi
           <button class="ml-3 text-copper hover:text-bronze">Copy</button>
         </div>
         <button 
           id="jupiter-open-btn"
-          class="bg-gradient-to-r from-copper to-bronze text-black font-bold px-10 py-5 rounded-xl text-xl hover:opacity-90 transition copper-glow">
+          class="bg-gradient-to-r from-copper to-bronze text-black font-bold px-8 py-4 md:px-10 md:py-5 rounded-xl text-lg md:text-xl hover:opacity-90 transition copper-glow">
           Acquire on Jupiter
         </button>
       </div>
@@ -82,9 +94,9 @@
   </header>
 
   <!-- The Inu Standard Section -->
-  <section class="py-24 px-6 md:px-12 bg-charcoal">
+  <section class="py-20 md:py-24 px-6 md:px-12 bg-charcoal">
     <div class="max-w-6xl mx-auto">
-      <h2 class="text-5xl font-serif text-bronze text-center mb-16">The Inu Standard</h2>
+      <h2 class="text-4xl md:text-5xl font-serif text-bronze text-center mb-12 md:mb-16">The Inu Standard</h2>
       <div class="grid md:grid-cols-2 gap-12">
         <div class="space-y-8 text-lg leading-relaxed">
           <p>The vision of Copper Inu is to create a digital commodity with true deflationary pressure. Transaction fees automatically fund buybacks, which lead to permanent burns/melts, a system superior to physical commodities.</p>
@@ -92,8 +104,8 @@
         </div>
         <div class="flex flex-col items-center justify-center">
           <!-- Simple flow infographic -->
-          <div class="w-full max-w-md bg-gray-900 border border-copper-dark rounded-xl p-8">
-            <div class="flex items-center justify-between text-copper text-xl font-semibold mb-6">
+          <div class="w-full max-w-md bg-gray-900 border border-copper-dark rounded-xl p-6 md:p-8">
+            <div class="flex items-center justify-between text-copper text-lg md:text-xl font-semibold mb-6">
               <span>Fees</span>
               <span>→</span>
               <span>Buyback</span>
@@ -104,7 +116,7 @@
               <div class="overflow-hidden h-6 mb-4 text-xs flex rounded bg-gray-800">
                 <div style="width:3%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-copper"></div>
               </div>
-              <div class="text-center text-bronze text-lg">3% Supply Melted</div>
+              <div class="text-center text-bronze text-base md:text-lg">3% Supply Melted</div>
             </div>
           </div>
         </div>
@@ -113,35 +125,35 @@
   </section>
 
   <!-- Inunomics vs Traditional Assets Section -->
-  <section class="py-24 px-6 md:px-12 bg-black">
+  <section class="py-20 md:py-24 px-6 md:px-12 bg-black">
     <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-5xl font-serif text-bronze mb-16">Inunomics vs Traditional Assets</h2>
+      <h2 class="text-4xl md:text-5xl font-serif text-bronze mb-12 md:mb-16">Inunomics vs Traditional Assets</h2>
       <img src="inunomics.jpg" alt="Inunomics vs Traditional Assets" class="mx-auto rounded-lg shadow-lg">
     </div>
   </section>
   
   <!-- Jupiter Swap Widget Section -->
-  <section id="jupiter-section" class="py-24 px-6 md:px-12 bg-gradient-to-b from-charcoal to-black">
+  <section id="jupiter-section" class="py-20 md:py-24 px-4 md:px-12 bg-gradient-to-b from-charcoal to-black">
     <div class="max-w-5xl mx-auto text-center">
-      <h2 class="text-5xl font-serif text-bronze mb-12">Swap to $COPPERINU</h2>
+      <h2 class="text-4xl md:text-5xl font-serif text-bronze mb-12">Swap to $COPPERINU</h2>
       <!-- Jupiter Terminal container -->
-      <div id="jupiter-terminal" class="w-full max-w-2xl mx-auto min-h-[600px] border border-copper-dark rounded-2xl overflow-hidden shadow-2xl copper-glow"></div>
+      <div id="jupiter-terminal" class="w-full max-w-md mx-auto min-h-[550px] border border-copper-dark rounded-xl overflow-hidden shadow-lg copper-glow"></div>
     </div>
   </section>
 
   <!-- Tokenomics Section -->
-  <section class="py-24 px-6 md:px-12 bg-charcoal">
+  <section class="py-20 md:py-24 px-6 md:px-12 bg-charcoal">
     <div class="max-w-6xl mx-auto">
-      <h2 class="text-5xl font-serif text-bronze text-center mb-16">Inunomics & Token Distribution</h2>
+      <h2 class="text-4xl md:text-5xl font-serif text-bronze text-center mb-12 md:mb-16">Inunomics & Token Distribution</h2>
       <div class="grid md:grid-cols-2 gap-12 text-lg leading-relaxed">
         <div>
-          <h3 class="text-3xl font-semibold text-copper mb-4">Burn Wallet</h3>
+          <h3 class="text-2xl md:text-3xl font-semibold text-copper mb-4">Burn Wallet</h3>
           <p>The dedicated burn wallet for $COPPERINU. Tokens sent here are permanently removed from circulation, contributing to the deflationary supply.</p>
-          <p class="mt-4">Burn Address: <span class="font-mono text-gray-300">1nc1nerator11111111111111111111111111111111</span></p>
+          <p class="mt-4 break-all">Burn Address: <span class="font-mono text-gray-300">1nc1nerator11111111111111111111111111111111</span></p>
           <p class="mt-2">Current Burned Amount: <span id="burned-amount" class="font-bold text-copper">Loading...</span></p>
         </div>
         <div>
-          <h3 class="text-3xl font-semibold text-copper mb-4">Key Metrics</h3>
+          <h3 class="text-2xl md:text-3xl font-semibold text-copper mb-4">Key Metrics</h3>
           <ul>
             <li class="mb-2">Total Supply: <span id="total-supply" class="font-bold text-gray-300">Loading...</span></li>
             <li class="mb-2">Circulating Supply: <span id="circulating-supply" class="font-bold text-gray-300">Loading...</span></li>
@@ -151,7 +163,7 @@
         </div>
       </div>
       <div class="mt-16 text-center">
-        <a href="#" id="burn-tracker-link" class="bg-gradient-to-r from-copper to-bronze text-black font-bold px-8 py-4 rounded-xl text-lg hover:opacity-90 transition copper-glow">View Burn Tracker</a>
+        <a href="#burn-tracker-section" id="burn-tracker-link" class="bg-gradient-to-r from-copper to-bronze text-black font-bold px-8 py-4 rounded-xl text-lg hover:opacity-90 transition copper-glow">View Burn Tracker</a>
       </div>
     </div>
   </section>
@@ -160,33 +172,33 @@
   <section class="py-20 px-6 md:px-12 bg-charcoal">
     <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
       <div class="md:col-span-2">
-        <h2 class="text-5xl font-serif text-bronze mb-12">How to Buy</h2>
+        <h2 class="text-4xl md:text-5xl font-serif text-bronze mb-12">How to Buy</h2>
         <div class="space-y-10">
           <div class="flex items-start gap-6">
             <div class="text-4xl font-bold text-copper">01</div>
             <div>
-              <h3 class="text-2xl font-semibold mb-2">Create a Wallet</h3>
+              <h3 class="text-xl md:text-2xl font-semibold mb-2">Create a Wallet</h3>
               <p>Download Phantom from App Store, Google Play, or Chrome extension.</p>
             </div>
           </div>
           <div class="flex items-start gap-6">
             <div class="text-4xl font-bold text-copper">02</div>
             <div>
-              <h3 class="text-2xl font-semibold mb-2">Get Some Solana</h3>
+              <h3 class="text-xl md:text-2xl font-semibold mb-2">Get Some Solana</h3>
               <p>Buy SOL in Phantom, transfer from exchange, or receive from friends.</p>
             </div>
           </div>
           <div class="flex items-start gap-6">
             <div class="text-4xl font-bold text-copper">03</div>
             <div>
-              <h3 class="text-2xl font-semibold mb-2">Connect to Jupiter</h3>
+              <h3 class="text-xl md:text-2xl font-semibold mb-2">Connect to Jupiter</h3>
               <p>Use the widget above or visit jup.ag to prepare your swap.</p>
             </div>
           </div>
           <div class="flex items-start gap-6">
             <div class="text-4xl font-bold text-copper">04</div>
             <div>
-              <h3 class="text-2xl font-semibold mb-2">Swap to $COPPERINU</h3>
+              <h3 class="text-xl md:text-2xl font-semibold mb-2">Swap to $COPPERINU</h3>
               <p>Enter amount, confirm, and join the Inu Standard movement.</p>
             </div>
           </div>
@@ -195,108 +207,120 @@
     </div>
   </section>
 
+  <!-- Burn Tracker Section -->
+  <section id="burn-tracker-section" class="py-20 md:py-24 px-6 md:px-12 bg-black">
+      <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-4xl md:text-5xl font-serif text-bronze mb-12">Live Burn</h2>
+          <div class="bg-gray-900 border border-copper-dark rounded-xl p-8">
+              <p class="text-lg text-gray-400 mb-4">Visualizing the deflationary melting of the copper supply.</p>
+              <div class="w-full bg-gray-800 rounded-full h-8 border-2 border-gray-700 overflow-hidden">
+                  <div class="burning-bar-progress h-full w-full"></div>
+              </div>
+              <p class="text-sm text-copper mt-4 animate-pulse">MELTING SUPPLY... 🔥</p>
+          </div>
+      </div>
+  </section>
+
+
   <!-- Footer -->
   <footer class="py-12 bg-black border-t border-copper-dark text-center text-gray-500">
-    <p class="text-lg mb-4">
+    <p class="text-lg mb-4 break-all px-4">
       61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi
     </p>
-    <div class="flex flex-wrap justify-center gap-4 text-xl mt-4">
-      <a href="https://copperinucto.fun/" target="_blank" class="hover:text-copper">Official Website</a>
-      <a href="https://linktr.ee/copperinucto" target="_blank" class="hover:text-copper">Linktree</a>
-      <a href="https://x.com/copperinucto" target="_blank" class="hover:text-copper">X @copperinucto</a>
-      <a href="https://x.com/himgajria" target="_blank" class="hover:text-copper">Himgajria X</a>
-      <a href="https://t.me/CopperInuTg" target="_blank" class="hover:text-copper">Telegram</a>
-      <a href="https://www.kucoin.com/" target="_blank" class="hover:text-copper">KuCoin</a>
-      <a href="https://www.bybit.com/" target="_blank" class="hover:text-copper">Bybit</a>
-      <a href="https://www.coingecko.com/" target="_blank" class="hover:text-copper">CoinGecko</a>
-      <a href="https://www.mexc.com/" target="_blank" class="hover:text-copper">MEXC</a>
-      <a href="https://jup.ag/" target="_blank" class="hover:text-copper">Jupiter</a>
-      <a href="https://dexscreener.com/" target="_blank" class="hover:text-copper">Dexscreener</a>
-      <a href="https://pump.fun/" target="_blank" class="hover:text-copper">Pumpfun</a>
+    <div class="flex flex-wrap justify-center gap-4 text-base md:text-xl mt-4 px-4">
+      <a href="https://copperinucto.fun/" target="_blank" class="hover:text-copper">Join The Community</a>
+      <a href="https://pump.fun/coin/61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi" target="_blank" class="hover:text-copper">Pump.fun</a>
+      <a href="https://dexscreener.com/solana/3iut1oaausqkehajkumzjbptihy2yn7awfij2crsuzvc" target="_blank" class="hover:text-copper">DEXScreener</a>
+      <a href="https://x.com/i/communities/2015937100198088718" target="_blank" class="hover:text-copper">X/Twitter Community</a>
+      <a href="https://t.me/+OnrugpE8z_VhOWJk" target="_blank" class="hover:text-copper">Telegram Meme Depot</a>
+      <a href="https://www.mexc.com/exchange/COPPERINU_USDT" target="_blank" class="hover:text-copper">MEXC</a>
+      <a href="https://linktr.ee/copperinucto" target="_blank" class="hover:text-copper">Linktr Links</a>
       <a href="https://solscan.io/account/1nc1nerator11111111111111111111111111111111" target="_blank" class="hover:text-copper">Burn Tracker</a>
     </div>
   </footer>
 
-  <!-- Jupiter Terminal Initialization Script -->
-  <script src="https://terminal.jup.ag/main-v6.js" defer></script>
+  <!-- Jupiter Plugin Initialization & Live Data -->
   <script>
-    const BURN_WALLET_ADDRESS = "1nc1nerator11111111111111111111111111111111";
-    const COPPERINU_MINT_ADDRESS = "61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi";
-    const SOLANA_RPC_URL = "https://api.mainnet-beta.solana.com";
+    const API_ENDPOINT = 'https://copperinu-backend.onrender.com/api/tokenomics';
 
+    // --- 1. Function to Fetch and Update UI ---
     async function fetchTokenomicsData() {
       try {
-        const response = await fetch('http://127.0.0.1:5000/api/tokenomics');
+        const response = await fetch(API_ENDPOINT);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
 
-        document.getElementById('burned-amount').textContent = data.burnedAmount.toLocaleString();
-        document.getElementById('total-supply').textContent = data.totalSupply.toLocaleString();
-        document.getElementById('circulating-supply').textContent = data.circulatingSupply.toLocaleString();
-        document.getElementById('market-cap').textContent = `$${data.marketCap.toLocaleString()}`;
+        // --- Helper function for formatting numbers ---
+        const formatNumber = (num) => num ? parseFloat(num).toLocaleString(undefined, { maximumFractionDigits: 2 }) : '0';
+
+        // --- Update Key Metrics ---
+        document.getElementById('burned-amount').textContent = formatNumber(data.burnedAmount);
+        document.getElementById('total-supply').textContent = formatNumber(data.totalSupply);
+        document.getElementById('circulating-supply').textContent = formatNumber(data.circulatingSupply);
+        document.getElementById('market-cap').textContent = data.marketCap ? `$${formatNumber(data.marketCap)}` : '$0';
         
-        const topHoldersList = data.topHolders.map(holder => {
-          return `<li>${holder.address}: ${parseFloat(holder.amount).toLocaleString()}</li>`;
-        }).join('');
-        document.getElementById('top-holders').innerHTML = `<ul>${topHoldersList}</ul>`;
+        // --- Update Top Holders ---
+        if (data.topHolders && data.topHolders.length > 0) {
+            const topHoldersList = data.topHolders.map(holder => {
+                return `<li class="truncate"><strong>${formatNumber(holder.amount)}</strong> - ${holder.address}</li>`;
+            }).join('');
+            document.getElementById('top-holders').innerHTML = `<ul class="space-y-2">${topHoldersList}</ul>`;
+        } else {
+            document.getElementById('top-holders').textContent = 'Loading...';
+        }
+
+        // --- Update Live Burn Bar ---
+        if (data.totalSupply > 0 && data.burnedAmount >= 0) {
+          const burnPercentage = (data.burnedAmount / data.totalSupply) * 100;
+          const burnBar = document.querySelector('#burn-tracker-section .burning-bar-progress');
+          if (burnBar) {
+            burnBar.style.width = `${burnPercentage}%`;
+          }
+          const burnMeltedText = document.querySelector('#burn-melted-text');
+          if (burnMeltedText) {
+            burnMeltedText.textContent = `${burnPercentage.toFixed(4)}% of Supply Melted`;
+          }
+        }
 
       } catch (error) {
         console.error('Error fetching tokenomics data:', error);
-        document.getElementById('burned-amount').textContent = 'Error';
-        document.getElementById('total-supply').textContent = 'Error';
-        document.getElementById('circulating-supply').textContent = 'Error';
-        document.getElementById('market-cap').textContent = 'Error';
-        document.getElementById('top-holders').textContent = 'Error';
+        // Optionally set text to 'Error' on failure
+        const errorFields = ['burned-amount', 'total-supply', 'circulating-supply', 'market-cap', 'top-holders'];
+        errorFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = 'Error';
+        });
       }
     }
 
+    // --- 2. Event Listeners and Timers ---
     document.addEventListener('DOMContentLoaded', () => {
-      const initializeJupiter = () => {
-        if (window.Jupiter) {
-          window.Jupiter.init({
-            displayMode: 'integrated',
-            container: document.getElementById('jupiter-terminal'),
-            endpoint: 'https://api.mainnet-beta.solana.com',
-            formProps: {
-              fixedOutputMint: true,
-              initialOutputMint: '61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi',
-            },
-            onSuccess: ({ txid }) => {
-              console.log('Swap successful:', txid);
-            },
-            onFailure: (error) => {
-              console.error('Swap failed:', error);
-            }
-          });
-        } else {
-            console.warn('Jupiter Terminal script not loaded yet.');
-        }
-      };
-
-      // Retry initializing Jupiter Terminal if it's not available immediately
-      let initAttempts = 0;
-      const maxInitAttempts = 5;
-      const initInterval = setInterval(() => {
-        if (window.Jupiter) {
-          clearInterval(initInterval);
-          initializeJupiter();
-        } else if (initAttempts < maxInitAttempts) {
-          initAttempts++;
-        } else {
-          clearInterval(initInterval);
-          console.error('Failed to initialize Jupiter Terminal after several attempts.');
-        }
-      }, 500);
-
-      // Scroll to Jupiter section on button click
+      // --- Jupiter Button Listener ---
       document.getElementById('jupiter-open-btn')?.addEventListener('click', () => {
         document.getElementById('jupiter-section')?.scrollIntoView({ behavior: 'smooth' });
       });
 
+      // --- Initial Data Fetch ---
       fetchTokenomicsData();
+
+      // --- Set up polling to fetch data every 30 seconds ---
+      setInterval(fetchTokenomicsData, 30000);
     });
+
+    // --- 3. Jupiter Plugin Initialization ---
+    window.onload = () => {
+      window.Jupiter.init({
+        displayMode: "integrated",
+        integratedTargetId: "jupiter-terminal",
+        formProps: {
+          initialOutputMint: "61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi",
+          fixedOutputMint: true,
+        },
+      });
+    };
   </script>
 </body>
-</html>        
+</html>
+        
