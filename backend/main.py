@@ -61,6 +61,10 @@ def get_tokenomics_data():
         else:
             total_supply = supply_response.value.ui_amount
             print(f"[SUCCESS] Total Supply: {total_supply}")
+
+        total_supply = supply_response.value.ui_amount or 0
+        print(f"[SUCCESS] Total Supply: {total_supply}")
+ 
     except Exception as e:
         print(f"[ERROR] Getting total supply: {e}\n{traceback.format_exc()}")
         total_supply = 0
