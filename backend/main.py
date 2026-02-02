@@ -48,7 +48,8 @@ def get_tokenomics_data():
     total_supply = 0
     try:
         print("[LOG] Fetching total supply...")
-        supply_response = client.get_token_supply(PublicKey(COPPERINU_MINT_ADDRESS))
+        mint_public_key = PublicKey.from_string(COPPERINU_MINT_ADDRESS)
+        supply_response = client.get_token_supply(mint_public_key)
         total_supply = supply_response.value.ui_amount or 0
         print(f"[SUCCESS] Total Supply: {total_supply}")
     except Exception as e:
@@ -59,8 +60,8 @@ def get_tokenomics_data():
     burned_amount = 0
     try:
         print("[LOG] Fetching burn wallet balance...")
-        mint_key = PublicKey(COPPERINU_MINT_ADDRESS)
-        burn_wallet_key = PublicKey(BURN_WALLET_ADDRESS)
+        mint_key = PublicKey.from_string(COPPERINU_MINT_ADDRESS)
+        burn_wallet_key = PublicKey.from_string(BURN_WALLET_ADDRESS)
         
         ata_address = get_associated_token_address(burn_wallet_key, mint_key)
         print(f"[LOG] Calculated ATA for burn wallet: {ata_address}")
@@ -102,7 +103,8 @@ def get_tokenomics_data():
     top_holders = []
     try:
         print("[LOG] Fetching top holders...")
-        largest_accounts_response = client.get_token_largest_accounts(PublicKey(COPPERINU_MINT_ADDRESS))
+        mint_public_key_for_holders = PublicKey.from_string(COPPERINU_MINT_ADDRESS)
+        largest_accounts_response = client.get_token_largest_accounts(mint_public_key_for_holders)
         top_holders = [
             {"address": str(acc.address), "amount": acc.ui_amount_string}
             for acc in largest_accounts_response.value[:5]
