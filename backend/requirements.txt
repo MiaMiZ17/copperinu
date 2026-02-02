@@ -1,0 +1,6 @@
+Flask
+requests
+solana
+Flask-Cors
+cachetools
+python-dotenv
