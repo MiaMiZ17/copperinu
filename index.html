@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -64,11 +65,19 @@
 
   <!-- Hero Section -->
   <header class="relative patina-bg h-screen flex flex-col items-center justify-center overflow-hidden text-center px-4 md:px-6">
-    <img 
-      src="logo.jpg" 
-      alt="Copper Inu Bullion Coin" 
+    <model-viewer
+      src="Model_Compressed (1).glb"
+      alt="Copper Inu 3D Model"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      auto-rotate
+      shadow-intensity="1"
+      environment-image="neutral"
+      exposure="1"
       class="w-48 h-48 md:w-64 md:h-64 object-contain coin-glow mb-8"
-    />
+      style="background-color: transparent;"
+    ></model-viewer>
     <div class="relative z-20">
       <h1 class="text-6xl md:text-9xl font-serif text-copper tracking-wide drop-shadow-2xl">
         COPPERINU
@@ -80,9 +89,9 @@
         Commodities Reimagined On-Chain | Deflationary Burns & Perpetual Memetic Dominance
       </p>
       <div class="mt-12 flex flex-col md:flex-row items-center justify-center gap-6">
-        <div class="bg-gray-900 border border-copper-dark rounded-lg px-4 py-3 md:px-6 md:py-4 text-base md:text-lg font-mono">
-          61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi
-          <button class="ml-3 text-copper hover:text-bronze">Copy</button>
+        <div id="ca-address-container" class="bg-gray-900 border border-copper-dark rounded-lg px-4 py-3 md:px-6 md:py-4 text-base md:text-lg font-mono">
+          <span id="ca-address-text">61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi</span>
+          <button id="copy-ca-address-btn" class="ml-3 text-copper hover:text-bronze">Copy</button>
         </div>
         <button 
           id="jupiter-open-btn"
@@ -114,9 +123,9 @@
             </div>
             <div class="relative pt-1">
               <div class="overflow-hidden h-6 mb-4 text-xs flex rounded bg-gray-800">
-                <div style="width:3%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-copper"></div>
+                <div style="width:3%" id="burn-bar-standard" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-copper burning-bar-progress">🔥</div>
               </div>
-              <div class="text-center text-bronze text-base md:text-lg">3% Supply Melted</div>
+              <div id="burn-melted-text" class="text-center text-bronze text-base md:text-lg">3% Supply Melted</div>
             </div>
           </div>
         </div>
@@ -128,14 +137,7 @@
   <section class="py-20 md:py-24 px-6 md:px-12 bg-black">
     <div class="max-w-4xl mx-auto text-center">
       <h2 class="text-4xl md:text-5xl font-serif text-bronze mb-12 md:mb-16">Inunomics vs Traditional Assets</h2>
-      <!-- X (Twitter) Video Embed -->
-      <div class="flex justify-center">
-        <blockquote class="twitter-tweet" data-dnt="true" data-theme="dark">
-          <p lang="en" dir="ltr">Check out this video!</p>
-          &mdash; CopperInu (@copperinucto) <a href="https://x.com/i/status/2017746976477987284">February 2, 2026</a>
-        </blockquote>
-      </div>
-      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <img src="inunomics.jpg" alt="Inunomics vs Traditional Assets" class="w-full max-w-xl mx-auto mb-12 rounded-lg shadow-lg">
     </div>
   </section>
   
@@ -220,10 +222,24 @@
           <h2 class="text-4xl md:text-5xl font-serif text-bronze mb-12">Live Burn</h2>
           <div class="bg-gray-900 border border-copper-dark rounded-xl p-8">
               <p class="text-lg text-gray-400 mb-4">Visualizing the deflationary melting of the copper supply.</p>
-              <div class="w-full bg-gray-800 rounded-full h-8 border-2 border-gray-700 overflow-hidden">
-                  <div class="burning-bar-progress h-full w-full"></div>
+              <div class="w-full bg-gray-800 rounded-full h-8 border-2 border-gray-700 overflow-hidden relative">
+                  <div class="burning-bar-progress h-full" style="width:3%;">
+                      <span id="live-burn-percentage-inside" class="absolute inset-0 flex items-center justify-center text-black font-bold">3.0000% 🔥</span>
+                  </div>
               </div>
-              <p class="text-sm text-copper mt-4 animate-pulse">MELTING SUPPLY... 🔥</p>
+              <p id="live-burn-percentage-text" class="text-sm text-copper mt-4 animate-pulse">3.0000% Supply Melted 🔥</p>
+          <div class="mt-8 pt-6 border-t border-copper-dark text-left">
+            <h3 class="text-xl font-semibold text-copper mb-4">Burn Address Portfolio</h3>
+            <p class="text-gray-400 mb-2">View on Solscan: <a href="https://solscan.io/account/1nc1nerator11111111111111111111111111111111#portfolio" target="_blank" class="text-bronze hover:underline break-all">1nc1nerator111...nU9jsY</a></p>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-gray-300 text-sm md:text-base">
+              <div class="p-2 bg-gray-800 rounded"><strong>Token Name:</strong> Copper Inu</div>
+              <div class="p-2 bg-gray-800 rounded"><strong>Symbol:</strong> COPPERINU</div>
+              <div class="p-2 bg-gray-800 rounded"><strong>Token Balance:</strong> 30,000,000</div>
+              <div class="p-2 bg-gray-800 rounded"><strong>Price:</strong> $0.008419</div>
+              <div class="p-2 bg-gray-800 rounded"><strong>Value:</strong> $252,570.00</div>
+              <div class="p-2 bg-gray-800 rounded"><strong>Percentage:</strong> 3%</div>
+            </div>
+          </div>
           </div>
       </div>
   </section>
@@ -232,16 +248,16 @@
   <!-- Footer -->
   <footer class="py-12 bg-black border-t border-copper-dark text-center text-gray-500">
     <p class="text-lg mb-4 break-all px-4">
-      61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi
+      <span id="footer-ca-address-text">61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi</span>
+      <button id="copy-footer-ca-address-btn" class="ml-3 text-copper hover:text-bronze text-base">Copy</button>
     </p>
     <div class="flex flex-wrap justify-center gap-4 text-base md:text-xl mt-4 px-4">
       <a href="https://pump.fun/coin/61Wj56QgGyyB966T7YsMzEAKRLcMvJpDbPzjkrCZc4Bi" target="_blank" class="hover:text-copper flex items-center"><img src="pump.png" alt="Pump.fun" class="w-6 h-6 inline-block mr-2 align-middle">Pump.fun</a>
       <a href="https://dexscreener.com/solana/3iUT1oAAUSqKeHAjkumzJbptihy2yN7AwFij2CrsUZVC" target="_blank" class="hover:text-copper flex items-center"><img src="dex.png" alt="DEXScreener" class="w-6 h-6 inline-block mr-2 align-middle">DEXScreener</a>
       <a href="https://x.com/i/communities/2015937100198088718" target="_blank" class="hover:text-copper flex items-center"><img src="x.png" alt="X/Twitter Community" class="w-6 h-6 inline-block mr-2 align-middle">X/Twitter Community</a>
       <a href="https://t.me/+OnrugpE8z_VhOWJk" target="_blank" class="hover:text-copper flex items-center"><img src="t.png" alt="Telegram Meme Depot" class="w-6 h-6 inline-block mr-2 align-middle">Telegram Meme Depot</a>
-      <a href="https://www.mexc.com/exchange/COPPERINU_USDT" target="_blank" class="hover:text-copper">MEXC</a>
+      <a href="https://www.mexc.com/exchange/COPPERINU_USDT" target="_blank" class="hover:text-copper flex items-center"><img src="mexc.png" alt="MEXC" class="w-6 h-6 inline-block mr-2 align-middle">MEXC</a>
       <a href="https://linktr.ee/copperinucto" target="_blank" class="hover:text-copper flex items-center"><img src="l.png" alt="Linktr Links" class="w-6 h-6 inline-block mr-2 align-middle">Linktr Links</a>
-      <a href="https://solscan.io/account/1nc1nerator11111111111111111111111111111111" target="_blank" class="hover:text-copper">Burn Tracker</a>
     </div>
   </footer>
 
@@ -280,13 +296,29 @@
         // --- Update Live Burn Bar ---
         if (data.totalSupply > 0 && data.burnedAmount >= 0) {
           const burnPercentage = (data.burnedAmount / data.totalSupply) * 100;
-          const burnBar = document.querySelector('#burn-tracker-section .burning-bar-progress');
-          if (burnBar) {
-            burnBar.style.width = `${burnPercentage}%`;
+
+          // For the main burn bar in The Inu Standard section
+          const burnBarStandard = document.getElementById('burn-bar-standard');
+          if (burnBarStandard) {
+            burnBarStandard.style.width = `${burnPercentage}%`;
           }
-          const burnMeltedText = document.querySelector('#burn-melted-text');
-          if (burnMeltedText) {
-            burnMeltedText.textContent = `${burnPercentage.toFixed(4)}% of Supply Melted`;
+          const burnMeltedTextStandard = document.querySelector('#burn-melted-text');
+          if (burnMeltedTextStandard) {
+            burnMeltedTextStandard.textContent = `${burnPercentage.toFixed(4)}% Supply Melted`;
+          }
+
+          // For the Live Burn section
+          const liveBurnBar = document.querySelector('#burn-tracker-section .burning-bar-progress');
+          if (liveBurnBar) {
+            liveBurnBar.style.width = `${burnPercentage}%`;
+          }
+          const liveBurnPercentageInside = document.getElementById('live-burn-percentage-inside');
+          if (liveBurnPercentageInside) {
+            liveBurnPercentageInside.textContent = `${burnPercentage.toFixed(4)}% 🔥`;
+          }
+          const liveBurnPercentageText = document.getElementById('live-burn-percentage-text');
+          if (liveBurnPercentageText) {
+            liveBurnPercentageText.textContent = `${burnPercentage.toFixed(4)}% Supply Melted 🔥`;
           }
         }
 
@@ -308,15 +340,38 @@
         document.getElementById('jupiter-section')?.scrollIntoView({ behavior: 'smooth' });
       });
 
+      // --- Copy CA Address to Clipboard ---
+      document.getElementById('copy-ca-address-btn')?.addEventListener('click', async () => {
+        const caAddress = document.getElementById('ca-address-text')?.textContent;
+        if (caAddress) {
+          try {
+            await navigator.clipboard.writeText(caAddress);
+            alert('CA Address copied to clipboard!'); // Provide user feedback
+          } catch (err) {
+            console.error('Failed to copy CA Address: ', err);
+            alert('Failed to copy CA Address.');
+          }
+        }
+      });
+
       // --- Initial Data Fetch ---
       fetchTokenomicsData();
 
-      // --- Set up polling to fetch data every 30 seconds ---
-      setInterval(fetchTokenomicsData, 30000);
-    });
+      // --- Copy Footer CA Address to Clipboard ---
+      document.getElementById('copy-footer-ca-address-btn')?.addEventListener('click', async () => {
+        const caAddress = document.getElementById('footer-ca-address-text')?.textContent;
+        if (caAddress) {
+          try {
+            await navigator.clipboard.writeText(caAddress);
+            alert('CA Address copied to clipboard!'); // Provide user feedback
+          } catch (err) {
+            console.error('Failed to copy Footer CA Address: ', err);
+            alert('Failed to copy Footer CA Address.');
+          }
+        }
+      });
 
-    // --- 3. Jupiter Plugin Initialization ---
-    window.onload = () => {
+      // --- 3. Jupiter Plugin Initialization ---
       window.Jupiter.init({
         displayMode: "integrated",
         integratedTargetId: "jupiter-terminal",
@@ -325,7 +380,7 @@
           fixedOutputMint: true,
         },
       });
-    };
+    });
   </script>
 </body>
 </html>
